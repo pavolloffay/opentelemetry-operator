@@ -3,8 +3,8 @@ name: "Publish operator"
 on:
   push:
     branches: [ main ]
-  release:
-    types: [ published ]
+  tags:
+      - 'v*'
 
   workflow_dispatch:
 
