@@ -42,7 +42,7 @@ jobs:
       - name: Checkout operator repo under tmp/ directory
         uses: actions/checkout@v3
         with:
-          repository: pavolloffay/community-operators-prod
+          repository: open-telemetry/opentelemetry-operator
           # this is the personal access token used for "git push" below
           token: ${{ secrets.OPENTELEMETRYBOT_GITHUB_TOKEN }}
           path: tmp/
