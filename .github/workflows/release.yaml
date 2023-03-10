@@ -31,6 +31,16 @@ jobs:
     needs: release
     uses: ./.github/workflows/reusable-operator-hub-release.yaml
     with:
+      org: redhat-openshift-ecosystem
       repo: community-operators-prod
+    secrets:
+      OPENTELEMETRYBOT_GITHUB_TOKEN: ${{ secrets.OPENTELEMETRYBOT_GITHUB_TOKEN }}
+
+  operator-hub-community-release:
+    needs: release
+    uses: ./.github/workflows/reusable-operator-hub-release.yaml
+    with:
+      org: k8s-operatorhub
+      repo: community-operators
     secrets:
       OPENTELEMETRYBOT_GITHUB_TOKEN: ${{ secrets.OPENTELEMETRYBOT_GITHUB_TOKEN }}

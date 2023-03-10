@@ -3,6 +3,9 @@ name: Reusable - Create operator hub pull request
 on:
   workflow_call:
     inputs:
+      org:
+        type: string
+        required: true
       repo:
         type: string
         required: true
@@ -34,7 +37,7 @@ jobs:
           # (fetching the upstream repo with "--depth 1" would lead to "shallow update not allowed"
           #  error when pushing back to the origin repo)
           gh repo sync pavolloffay/${{ inputs.repo }} \
-              --source redhat-openshift-ecosystem/${{ inputs.repo }} \
+              --source ${{ inputs.org }}/${{ inputs.repo }} \
               --force
 
       - name: Checkout operatorhub repo
@@ -44,7 +47,7 @@ jobs:
           # this is the personal access token used for "git push" below
           token: ${{ secrets.OPENTELEMETRYBOT_GITHUB_TOKEN }}
 
-      - name: Checkout operator repo under tmp/ directory
+      - name: Checkout opentelemetry-operator to tmp/ directory
         uses: actions/checkout@v3
         with:
           repository: open-telemetry/opentelemetry-operator
@@ -65,7 +68,7 @@ jobs:
           git config user.name pavolloffay
           git config user.email p.loffay@gmail.com
 
-      - name: Create pull request against ${{ inputs.repo }}
+      - name: Create pull request against ${{ inputs.org }}/${{ inputs.repo }}
         env:
           VERSION: ${{ env.version }}
           # this is the personal access token used for "gh pr create" below
@@ -88,5 +91,5 @@ jobs:
           git push -f --set-upstream origin $branch
           gh pr create --title "$message" \
                        --body "$body" \
-                       --repo redhat-openshift-ecosystem/${{ inputs.repo }} \
+                       --repo ${{ inputs.org }}/${{ inputs.repo }} \
                        --base main
