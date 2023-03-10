@@ -82,7 +82,7 @@ jobs:
 
           git checkout -b $branch
           git add -A
-          git commit -m "$message"
+          git commit -s -m "$message"
           git push -f --set-upstream origin $branch
           gh pr create --title "$message" \
                        --body "$body" \
