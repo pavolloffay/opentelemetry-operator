@@ -27,11 +27,11 @@ jobs:
 #        OPERATOR_VERSION=$(git describe --tags)
 #        curl https://proxy.golang.org/github.com/open-telemetry/opentelemetry-operator/@v/${OPERATOR_VERSION}.info
 
-  operator-hub-release:
-#    needs: release
+  operator-hub-prod-release:
+    needs: release
     uses: ./.github/workflows/reusable-operator-hub-release.yaml
     with:
-      version: 0.72.0
+      version: $(git describe --tags)
       repo: community-operators-prod
     secrets:
       OPENTELEMETRYBOT_GITHUB_TOKEN: ${{ secrets.OPENTELEMETRYBOT_GITHUB_TOKEN }}
