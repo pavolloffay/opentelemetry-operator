@@ -6,6 +6,9 @@ on:
       version:
         type: string
         required: true
+      repo:
+        type: string
+        required: true
     secrets:
       OPENTELEMETRYBOT_GITHUB_TOKEN:
         required: true
@@ -29,13 +32,13 @@ jobs:
           # (fetching the upstream repo with "--depth 1" would lead to "shallow update not allowed"
           #  error when pushing back to the origin repo)
           gh repo sync pavolloffay/community-operators-prod \
-              --source redhat-openshift-ecosystem/community-operators-prod \
+              --source redhat-openshift-ecosystem/${{ inputs.repo }} \
               --force
 
       - name: Checkout operatorhub repo
         uses: actions/checkout@v3
         with:
-          repository: pavolloffay/community-operators-prod
+          repository: pavolloffay/${{ inputs.repo }}
           # this is the personal access token used for "git push" below
           token: ${{ secrets.OPENTELEMETRYBOT_GITHUB_TOKEN }}
 
@@ -73,7 +76,7 @@ jobs:
           # and so it cannot @ mention OpenTelemetry org groups
           body="Release opentelemetry-operator \`$VERSION\`.
 
-          cc @pavollloffay @frzifus
+          cc @pavolloffay @frzifus @yuriolisa @jaronoff97 @VineethReddy02
           "
           branch="update-opentelemetry-operator-to-${VERSION}"
 
