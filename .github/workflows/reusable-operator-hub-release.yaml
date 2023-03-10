@@ -31,7 +31,7 @@ jobs:
           # synchronizing the fork is fast, and avoids the need to fetch the full upstream repo
           # (fetching the upstream repo with "--depth 1" would lead to "shallow update not allowed"
           #  error when pushing back to the origin repo)
-          gh repo sync pavolloffay/community-operators-prod \
+          gh repo sync pavolloffay/${{ inputs.repo }} \
               --source redhat-openshift-ecosystem/${{ inputs.repo }} \
               --force
 
@@ -54,26 +54,22 @@ jobs:
         env:
           VERSION: ${{ inputs.version }}
         run: |
-          pwd 
-          ls ${GITHUB_WORKSPACE} 
-          ls ./tmp 
-          mkdir operators/opentelemetry-operator/${VERSION} && cp ./tmp/bundle -R operators/opentelemetry-operator/${VERSION} && rm -rf ./tmp
+          mkdir operators/opentelemetry-operator/${VERSION} 
+          cp ./tmp/bundle -R operators/opentelemetry-operator/${VERSION} 
+          rm -rf ./tmp
 
       - name: Use CLA approved github bot
         run: |
           git config user.name pavolloffay
           git config user.email p.loffay@gmail.com
 
-      - name: Create pull request against community-operators-prod
+      - name: Create pull request against ${{ inputs.repo }}
         env:
           VERSION: ${{ inputs.version }}
           # this is the personal access token used for "gh pr create" below
           GH_TOKEN: ${{ secrets.OPENTELEMETRYBOT_GITHUB_TOKEN }}
         run: |
           message="Update the opentelemetry to $VERSION"
-          # note that @open-telemetry/java-instrumentation-approvers cannot be used below
-          # because opentelemetrybot is not a member of the OpenTelemetry org,
-          # and so it cannot @ mention OpenTelemetry org groups
           body="Release opentelemetry-operator \`$VERSION\`.
 
           cc @pavolloffay @frzifus @yuriolisa @jaronoff97 @VineethReddy02
@@ -90,5 +86,5 @@ jobs:
           git push -f --set-upstream origin $branch
           gh pr create --title "$message" \
                        --body "$body" \
-                       --repo redhat-openshift-ecosystem/community-operators-prod \
+                       --repo redhat-openshift-ecosystem/${{ inputs.repo }} \
                        --base main
