@@ -31,7 +31,6 @@ jobs:
     needs: release
     uses: ./.github/workflows/reusable-operator-hub-release.yaml
     with:
-      version: ${{ ${git describe --tags) }}
       repo: community-operators-prod
     secrets:
       OPENTELEMETRYBOT_GITHUB_TOKEN: ${{ secrets.OPENTELEMETRYBOT_GITHUB_TOKEN }}

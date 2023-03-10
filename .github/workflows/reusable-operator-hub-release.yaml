@@ -3,26 +3,28 @@ name: Reusable - Create operator hub pull request
 on:
   workflow_call:
     inputs:
-      version:
-        type: string
-        required: true
       repo:
         type: string
         required: true
     secrets:
       OPENTELEMETRYBOT_GITHUB_TOKEN:
         required: true
-  # to help with partial release build failures
-  workflow_dispatch:
-    inputs:
-      version:
-        description: "Version"
-        required: true
 
 jobs:
   create-operator-pull-request:
     runs-on: ubuntu-latest
     steps:
+      - name: Set version as env variable
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          echo $TAG
+          TAG=${TAG:1} # remove v (prefix)
+          echo version=${TAG} >> $GITHUB_ENV # update GitHub ENV vars
+
+      - name: print version
+        run: echo ${{ env.version }}
+
       - name: Sync fork
         env:
           # this is the personal access token used for "gh repo sync" below
@@ -52,7 +54,7 @@ jobs:
 
       - name: Update version
         env:
-          VERSION: ${{ inputs.version }}
+          VERSION: ${{ env.version }}
         run: |
           mkdir operators/opentelemetry-operator/${VERSION} 
           cp ./tmp/bundle -R operators/opentelemetry-operator/${VERSION} 
@@ -65,7 +67,7 @@ jobs:
 
       - name: Create pull request against ${{ inputs.repo }}
         env:
-          VERSION: ${{ inputs.version }}
+          VERSION: ${{ env.version }}
           # this is the personal access token used for "gh pr create" below
           GH_TOKEN: ${{ secrets.OPENTELEMETRYBOT_GITHUB_TOKEN }}
         run: |
