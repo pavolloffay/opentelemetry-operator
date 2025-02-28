@@ -176,6 +176,8 @@ func (i *sdkInjector) inject(ctx context.Context, insts languageInstrumentations
 			pod = i.injectCommonSDKConfig(ctx, otelinst, ns, pod, index, index)
 			pod = i.setInitContainerSecurityContext(pod, pod.Spec.Containers[index].SecurityContext, apacheAgentInitContainerName)
 			pod = i.setInitContainerSecurityContext(pod, pod.Spec.Containers[index].SecurityContext, apacheAgentCloneContainerName)
+			pod = i.setInitContainerSecurityContext(pod, pod.Spec.Containers[index].SecurityContext, nginxAgentInitContainerName)
+			pod = i.setInitContainerSecurityContext(pod, pod.Spec.Containers[index].SecurityContext, nginxAgentCloneContainerName)
 		}
 	}
 
