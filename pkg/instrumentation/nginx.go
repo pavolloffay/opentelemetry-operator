@@ -18,7 +18,7 @@ import (
 
 const (
 	nginxDefaultConfigFile       = "/etc/nginx/nginx.conf"
-	nginxAgentCloneContainerName = "otel-agent-source-container-clone"
+	nginxAgentCloneContainerName = "otel-agent-source-container-clone-nginx"
 	nginxAgentInitContainerName  = "otel-agent-attach-nginx"
 	nginxAgentVolume             = "otel-nginx-agent"
 	nginxAgentConfigVolume       = "otel-nginx-conf-dir"
