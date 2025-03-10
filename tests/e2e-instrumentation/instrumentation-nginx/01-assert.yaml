@@ -59,7 +59,7 @@ spec:
     - --config=env:OTEL_CONFIG
     name: otc-container
   initContainers:
-  - name: otel-agent-source-container-clone
+  - name: otel-agent-source-container-clone-nginx
   - name: otel-agent-attach-nginx
 status:
   containerStatuses:
@@ -70,7 +70,7 @@ status:
     ready: true
     started: true
   initContainerStatuses:
-  - name: otel-agent-source-container-clone
+  - name: otel-agent-source-container-clone-nginx
     ready: true
   - name: otel-agent-attach-nginx
     ready: true
