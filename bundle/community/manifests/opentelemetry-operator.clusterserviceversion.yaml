@@ -578,7 +578,9 @@ spec:
                     fieldRef:
                       fieldPath: metadata.namespace
                 - name: METRICS_ADDR
-                  value: :8443
+                  value: :8443a
+
+
                 - name: METRICS_SECURE
                   value: "true"
                 - name: ENABLE_LEADER_ELECTION
