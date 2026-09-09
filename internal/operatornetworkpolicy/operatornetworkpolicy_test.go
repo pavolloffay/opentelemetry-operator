@@ -20,6 +20,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/intstr"
 	"k8s.io/client-go/kubernetes/fake"
+	kubeTesting "k8s.io/client-go/testing"
 )
 
 func newTestScheme() *runtime.Scheme {
@@ -110,6 +111,29 @@ func buildAndCapture(t *testing.T, clientset *fake.Clientset, scheme *runtime.Sc
 	ref, err := n.getOwnerReference(ctx)
 	require.NoError(t, err)
 	return n.buildNetworkPolicy(ref)
+}
+
+// startAndCapture runs Start() and captures the created NetworkPolicy
+// by using a reactor that cancels the context after creation.
+func startAndCapture(t *testing.T, clientset *fake.Clientset, scheme *runtime.Scheme, opts ...Option) *networkingv1.NetworkPolicy {
+	t.Helper()
+
+	var captured *networkingv1.NetworkPolicy
+	ctx, cancel := context.WithCancel(context.Background())
+
+	clientset.PrependReactor("create", "networkpolicies", func(action kubeTesting.Action) (bool, runtime.Object, error) {
+		createAction := action.(kubeTesting.CreateAction)
+		np := createAction.GetObject().(*networkingv1.NetworkPolicy)
+		captured = np.DeepCopy()
+		cancel()
+		return false, np, nil
+	})
+
+	n := NewOperatorNetworkPolicy(clientset, scheme, opts...)
+	err := n.(*networkPolicy).Start(ctx)
+	require.NoError(t, err)
+	require.NotNil(t, captured, "NetworkPolicy was not created")
+	return captured
 }
 
 func TestBuild_IPBlockPeersOnly(t *testing.T) {
@@ -458,10 +482,11 @@ func TestNeedLeaderElection(t *testing.T) {
 
 func TestCreateOrUpdate_CreatesWhenNotExist(t *testing.T) {
 	const namespace = "test-ns"
-	clientset := fake.NewClientset(operatorDeployment(namespace))
+	clientset := fake.NewClientset(operatorObjects(namespace)...)
 
 	n := NewOperatorNetworkPolicy(clientset, newTestScheme(),
 		WithOperatorNamespace(namespace),
+		WithOperatorPodName(testPodName),
 		WithAPIServerPort(6443),
 		WithAPIServerIPs([]string{"10.0.0.1"}),
 		WithLogger(logr.Discard()),
@@ -507,10 +532,11 @@ func TestCreateOrUpdate_UpdatesExistingPolicy(t *testing.T) {
 		},
 	}
 
-	clientset := fake.NewClientset(operatorDeployment(namespace), existingNP)
+	clientset := fake.NewClientset(append(operatorObjects(namespace), existingNP)...)
 
 	n := NewOperatorNetworkPolicy(clientset, newTestScheme(),
 		WithOperatorNamespace(namespace),
+		WithOperatorPodName(testPodName),
 		WithAPIServerPort(6443),
 		WithAPIServerIPs([]string{"10.0.0.1", "10.0.0.2"}),
 		WithLogger(logr.Discard()),
@@ -607,10 +633,11 @@ func TestHandleEndpointSliceEvent_UpdatesOnIPChange(t *testing.T) {
 		},
 	}
 
-	clientset := fake.NewClientset(operatorDeployment(namespace), endpointSlice)
+	clientset := fake.NewClientset(append(operatorObjects(namespace), endpointSlice)...)
 
 	n := NewOperatorNetworkPolicy(clientset, newTestScheme(),
 		WithOperatorNamespace(namespace),
+		WithOperatorPodName(testPodName),
 		WithAPIServerPort(6443),
 		WithAPIServerIPs([]string{"10.0.0.1", "10.0.0.2"}),
 		WithLogger(logr.Discard()),
@@ -659,10 +686,11 @@ func TestHandleEndpointSliceEvent_NoUpdateWhenIPsSame(t *testing.T) {
 		},
 	}
 
-	clientset := fake.NewClientset(operatorDeployment(namespace), endpointSlice)
+	clientset := fake.NewClientset(append(operatorObjects(namespace), endpointSlice)...)
 
 	n := NewOperatorNetworkPolicy(clientset, newTestScheme(),
 		WithOperatorNamespace(namespace),
+		WithOperatorPodName(testPodName),
 		WithAPIServerPort(6443),
 		WithAPIServerIPs([]string{"10.0.0.1", "10.0.0.2"}),
 		WithLogger(logr.Discard()),
@@ -710,10 +738,11 @@ func TestStart_CreatesAndWatches(t *testing.T) {
 		},
 	}
 
-	clientset := fake.NewClientset(operatorDeployment(namespace), endpointSlice)
+	clientset := fake.NewClientset(append(operatorObjects(namespace), endpointSlice)...)
 
 	n := NewOperatorNetworkPolicy(clientset, newTestScheme(),
 		WithOperatorNamespace(namespace),
+		WithOperatorPodName(testPodName),
 		WithAPIServerPort(6443),
 		WithAPIServerIPs([]string{"10.0.0.1"}),
 		WithLogger(logr.Discard()),
