@@ -22,10 +22,10 @@ updates:
   update_list:
   # metadata.annotations: support, OpenShift-specific annotations, metadata.name
   - search: "support: OpenTelemetry Community"
-    replace: "support: Red Hat\n    operators.openshift.io/valid-subscription: '[\"OpenShift Container Platform\", \"OpenShift Platform Plus\"]'\n    operators.openshift.io/infrastructure-features: '[\"disconnected\"]'\n    operatorframework.io/cluster-monitoring: \"true\"\n    operatorframework.io/suggested-namespace: openshift-opentelemetry-operator\n    features.operators.openshift.io/disconnected: \"true\"\n    features.operators.openshift.io/fips-compliant: \"true\"\n    features.operators.openshift.io/proxy-aware: \"true\"\n    features.operators.openshift.io/tls-profiles: \"false\"\n    features.operators.openshift.io/token-auth-aws: \"false\"\n    features.operators.openshift.io/token-auth-azure: \"false\"\n    features.operators.openshift.io/token-auth-gcp: \"false\"\n    features.operators.openshift.io/cnf: \"false\"\n    features.operators.openshift.io/cni: \"false\"\n    features.operators.openshift.io/csi: \"false\"\n    console.openshift.io/operator-monitoring-default: \"true\"\n    olm.skipRange: '>=0.33.0 <0.158.0-3'"
+    replace: "support: Red Hat\n    operators.openshift.io/valid-subscription: '[\"OpenShift Container Platform\", \"OpenShift Platform Plus\"]'\n    operators.openshift.io/infrastructure-features: '[\"disconnected\"]'\n    operatorframework.io/cluster-monitoring: \"true\"\n    operatorframework.io/suggested-namespace: openshift-opentelemetry-operator\n    features.operators.openshift.io/disconnected: \"true\"\n    features.operators.openshift.io/fips-compliant: \"true\"\n    features.operators.openshift.io/proxy-aware: \"true\"\n    features.operators.openshift.io/tls-profiles: \"false\"\n    features.operators.openshift.io/token-auth-aws: \"false\"\n    features.operators.openshift.io/token-auth-azure: \"false\"\n    features.operators.openshift.io/token-auth-gcp: \"false\"\n    features.operators.openshift.io/cnf: \"false\"\n    features.operators.openshift.io/cni: \"false\"\n    features.operators.openshift.io/csi: \"false\"\n    console.openshift.io/operator-monitoring-default: \"true\"\n    olm.skipRange: '>=0.33.0 <0.158.0-{DATE_TIME}'"
   # metadata.annotations: name
   - search: "name: opentelemetry-operator.v0.158.0"
-    replace: "name: opentelemetry-operator.v0.158.0-3"
+    replace: "name: opentelemetry-operator.v0.158.0-{DATE_TIME}"
   # metadata.annotatations.repository
   - search: "repository: github.com/open-telemetry/opentelemetry-operator"
     replace: "repository: https://github.com/open-telemetry/opentelemetry-operator"
@@ -35,9 +35,9 @@ updates:
   # metadata.namespace and metadata.labels
   - search: "namespace: placeholder"
     replace: "namespace: placeholder\n  labels:\n    operatorframework.io/arch.amd64: supported\n    operatorframework.io/arch.arm64: supported\n    operatorframework.io/arch.ppc64le: supported\n    operatorframework.io/arch.s390x: supported\n    operatorframework.io/os.linux: supported"
-  # spec.version + spec.replaces
+  # spec.version (olm.skipRange handles upgrade path, no replaces needed)
   - search: "version: 0.158.0"
-    replace: "version: 0.158.0-3\n  replaces: opentelemetry-operator.v0.158.0-2"
+    replace: "version: 0.158.0-{DATE_TIME}"
   # spec.maintainers
   - search: "maintainers:\n  - email: jpkroehling@redhat.com\n    name: Juraci Paixão Kröhling"
     replace: "maintainers:\n  - email: support@redhat.com\n    name: Red Hat support"
