@@ -33,7 +33,7 @@ require (
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.92.0
 	github.com/prometheus-operator/prometheus-operator/pkg/client v0.92.0
 	github.com/prometheus/client_golang v1.24.1
-	github.com/prometheus/common v0.70.1
+	github.com/prometheus/common v0.72.0
 	github.com/prometheus/prometheus v0.312.0
 	github.com/shirou/gopsutil/v4 v4.26.7
 	github.com/spf13/pflag v1.0.10
@@ -195,7 +195,7 @@ require (
 	golang.org/x/exp v0.0.0-20260727155853-b88d891fe743 // indirect
 	golang.org/x/mod v0.41.0
 	golang.org/x/net v0.60.0 // indirect
-	golang.org/x/oauth2 v0.36.0 // indirect
+	golang.org/x/oauth2 v0.37.0 // indirect
 	golang.org/x/sync v0.23.0 // indirect
 	golang.org/x/sys v0.49.0 // indirect
 	golang.org/x/term v0.46.0 // indirect
@@ -268,7 +268,7 @@ require (
 	github.com/gophercloud/gophercloud/v2 v2.12.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.19.1 // indirect
+	github.com/klauspost/compress v1.20.1 // indirect
 	github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 // indirect
 	github.com/michel-laterman/proxy-connect-dialer-go v0.1.0 // indirect
 	github.com/moby/moby/api v1.54.2 // indirect
@@ -276,7 +276,7 @@ require (
 	github.com/moby/spdystream v0.5.1 // indirect
 	github.com/outscale/osc-sdk-go/v2 v2.34.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
-	github.com/prometheus/client_golang/exp v0.0.0-20260518105423-c9d5bc4c50a9 // indirect
+	github.com/prometheus/client_golang/exp v0.0.0-20261014095535-2b01b52f0c18 // indirect
 	github.com/prometheus/otlptranslator v1.0.0 // indirect
 	github.com/prometheus/sigv4 v0.4.1 // indirect
 	github.com/quic-go/qpack v0.6.0 // indirect
