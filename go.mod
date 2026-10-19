@@ -264,7 +264,7 @@ require (
 	github.com/go-openapi/swag/typeutils v0.29.2 // indirect
 	github.com/go-openapi/swag/yamlutils v0.29.2 // indirect
 	github.com/google/cel-go v0.31.0 // indirect
-	github.com/gophercloud/gophercloud/v2 v2.12.0 // indirect
+	github.com/gophercloud/gophercloud/v2 v2.15.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.20.3 // indirect
