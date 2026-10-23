@@ -283,7 +283,7 @@ require (
 	github.com/quic-go/qpack v0.6.0 // indirect
 	github.com/quic-go/quic-go v0.64.1 // indirect
 	github.com/sony/gobreaker/v2 v2.4.0 // indirect
-	github.com/stackitcloud/stackit-sdk-go/core v0.26.0 // indirect
+	github.com/stackitcloud/stackit-sdk-go/core v0.27.1 // indirect
 	github.com/vultr/govultr/v3 v3.32.0 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
 	go.mongodb.org/mongo-driver/v2 v2.5.0 // indirect
